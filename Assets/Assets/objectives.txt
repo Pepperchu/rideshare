@@ -1,0 +1,11 @@
+//@TODO: govern where driver goes, point and click, shortest path (i.e airport)
+// --- if at airport maybe a rider will spawn
+// probability distribution to determine likliehood of rider spawning???? time of day too. geo ranges
+//Hotspot areas (shopping mall etc). Increase price of ride (and subsequent tipping from riders)
+//length of time spent at hotspots. Going to drive back home or stay for x amount of time. Menu interface
+//wait event (sierra's)
+//"favorite" system for storing previously visited location
+//length of time driving -- workday
+//RIDERS: Acceptable waiting time = ???? arbitrary? if too long rider will be mad. Report to metrics
+//Rider class -- decision strats
+// next step get directions factory working -- link to riders
