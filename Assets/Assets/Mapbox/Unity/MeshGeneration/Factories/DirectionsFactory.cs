@@ -13,6 +13,9 @@ namespace Mapbox.Unity.MeshGeneration.Factories
 
 	public class DirectionsFactory : MonoBehaviour
 	{
+
+		public delegate void RouteReady(List<Vector3> routePoints);
+		public static event RouteReady OnRouteReady;
 		[SerializeField]
 		AbstractMap _map;
 
@@ -83,6 +86,31 @@ namespace Mapbox.Unity.MeshGeneration.Factories
 			_directionResource.Steps = true;
 			_directions.Query(_directionResource, HandleDirectionsResponse);
 		}
+
+		public void QueryDirectionsBetweenPoints(Vector2d start, Vector2d end, System.Action<List<Vector3>> callback)
+{
+    var waypoints = new Vector2d[] { start, end };
+    var directionResource = new DirectionResource(waypoints, RoutingProfile.Driving);
+    directionResource.Steps = true;
+    _directions.Query(directionResource, (DirectionsResponse response) =>
+    {
+        if (response == null || response.Routes == null || response.Routes.Count < 1)
+        {
+            Debug.LogError("No route found.");
+            return;
+        }
+
+        var routePoints = new List<Vector3>();
+        foreach (var point in response.Routes[0].Geometry)
+        {
+            routePoints.Add(Conversions.GeoToWorldPosition(point.x, point.y, _map.CenterMercator, _map.WorldRelativeScale).ToVector3xz());
+        }
+
+        callback?.Invoke(routePoints);
+		Debug.LogError(routePoints);
+    });
+}
+
 
 		public IEnumerator QueryTimer()
 		{
